@@ -1,0 +1,29 @@
+
+<form method="post">
+    <div class="formbody">
+        <input type="hidden" name="FORM_SUBMIT" value="tl_bp_ideen">
+        <input type="hidden" name="REQUEST_TOKEN" value="<?php echo REQUEST_TOKEN; ?>">
+
+<p>
+<label>Der Titel Ihres Vorschlags *</label>
+<input type="text" name="title" value="">
+<label class="info">Ein aussagekr&auml;ftiger und verst&auml;ndlicher Titel bringt viele Besucher dazu, Ihren Vorschlag zu lesen.</label>
+</p>
+
+<p>
+<label>Die Beschreibung * (noch 1500 Zeichen)</label>
+<textarea name="description" rows="7"></textarea>
+<label class="info">Bitte beschreiben Sie Ihren Vorschlag so konkret und verst&auml;ndlich wie m&ouml;glich.</label>
+</p>
+<p>
+<label>Standort (Adresse) f&uuml;r Ihren Vorschlag</label>
+<input type="text" name="location" value="">
+<label class="info">Die Adresse makiert deine Idee und den dazugeh&ouml;rigen Standort (z. B. S&uuml;dring 2, 34497 Korbach).</label>
+</p>
+        <?php if(FE_USER_LOGGED_IN): ?>
+        <input type="submit" value="Vorschlag einreichen">
+        <?php else: ?>
+        <h3 class="pls_login">Hinweis: Du mu&szlig;t angemeldet sein um einen Vorschlag einzubringen.</h3>
+        <?php endif; ?>
+    </div>
+</form>

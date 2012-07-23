@@ -1,0 +1,122 @@
+<div class="<?php echo $this->class; ?>"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+    <<?php echo $this->hl; ?>><?php echo $this->Idee->title; ?></<?php echo $this->hl; ?>>
+
+    <div>
+        <ul class="meta">
+            <li class="clock">Erstellt am <?php echo date("d.m.Y", $this->Idee->tstamp); ?> um <?php echo date("H:i", $this->Idee->tstamp); ?> Uhr</li>
+            <li class="comments">Kommentare <?php echo $this->Idee->comments; ?></li>
+            <?php if($this->Idee->location): ?>
+            <li class="location"><?php echo $this->Idee->location; ?></li>
+            <?php endif; ?>
+        </ul>
+        <div style="clear: both;"></div>
+    </div>
+
+    <div class="descriptionText">
+        <?php echo nl2br($this->Idee->description); ?>
+    </div>
+
+    <?php if($this->Idee->location): ?>
+    <h2>Standort f&uuml;r diesen Vorschlag</h2>
+    <div class="locationMap">
+        <img src="http://maps.google.com/maps/api/staticmap?center=<?php echo urlencode($this->Idee->location); ?>&markers=color:blue%7Clabel:S%7C<?php echo urlencode($this->Idee->location); ?>&zoom=15&size=630x300&maptype=roadmap&sensor=false" alt="" border="0" width="630" height="300">
+        <span class="locationText"><?php echo $this->Idee->location; ?></span>
+    </div>
+    <?php endif; ?>
+
+    <?php if(FE_USER_LOGGED_IN): ?>
+    <div class="voting">
+    <div class="liked">
+            <span class="votes"><?php echo $this->Idee->liked; ?></span>
+            Stimmen
+            </div>
+
+            <form method="post">
+                <div class="formbody">
+                    <input type="hidden" name="FORM_SUBMIT" value="tl_bp_ideen_votes">
+                    <input type="hidden" name="REQUEST_TOKEN" value="<?php echo REQUEST_TOKEN; ?>">
+                    <p>Glauben Sie, dass dieser Vorschlag weiterverfolgt werden sollte? Dann geben Sie hier Ihre Stimme ab.</p>
+
+                    <input type="submit" value="Diesen Vorschlag unterst&uuml;tze Ich!">
+                </div>
+            </form>
+    </div>
+
+    <?php else: ?>
+    <h3 class="pls_login">Hinweis: Um f&uuml;r diesen Vorschlag zu stimmen mu&szlig;t du angemeldet sein.</h3>
+
+    <?php endif; ?>
+
+    <!--
+    <a href="http://www.facebook.com/sharer.php?u=<?php echo urlencode('http://www.buergerportal-wa-fkb.de/' . $_SERVER['REQUEST_URI']); ?>&t=<?php echo urlencode('Vorschlag: "' . $this->Idee->title . '" auf Bürgerportal Waldeck-Frankenberg'); ?>">Auf Facebook ver&ouml;ffentlichen</a>
+    -->
+
+
+
+
+
+
+
+
+
+<?php if ($this->allowComments && ($this->comments || !$this->requireLogin)): ?>
+
+<div class="ce_comments block">
+
+<h2>Kommentare zu <?php echo $this->Idee->title; ?></h2>
+<?php foreach ($this->comments as $comment) echo $comment; ?>
+<?php echo $this->pagination; ?>
+<?php if (!$this->requireLogin): ?>
+
+<!-- indexer::stop -->
+<div class="form">
+<?php if ($this->confirm): ?>
+
+<p class="confirm"><?php echo $this->confirm; ?></p>
+<?php else: ?>
+
+<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post">
+<div class="formbody">
+<input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formId; ?>">
+<input type="hidden" name="FORM_SUBMIT_DEFAULT" value="tl_comments">
+<input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+<div class="widget">
+  <?php echo $this->fields['name']->generateWithError(); ?> <?php echo $this->fields['name']->generateLabel(); ?>
+</div>
+<div class="widget">
+  <?php echo $this->fields['email']->generateWithError(); ?> <?php echo $this->fields['email']->generateLabel(); ?>
+</div>
+<div class="widget">
+  <?php echo $this->fields['website']->generateWithError(); ?> <?php echo $this->fields['website']->generateLabel(); ?>
+</div>
+<?php if (isset($this->fields['captcha'])): ?>
+<div class="widget">
+  <?php echo $this->fields['captcha']->generateWithError(); ?> <label for="ctrl_captcha"><?php echo $this->fields['captcha']->generateQuestion(); ?><span class="mandatory">*</span></label>
+</div>
+<?php endif; ?>
+<div class="widget">
+  <?php echo $this->fields['comment']->generateWithError(); ?> <label for="ctrl_<?php echo $this->fields['comment']->id; ?>" class="invisible"><?php echo $this->fields['comment']->label; ?></label>
+</div>
+<div class="submit_container">
+  <input type="submit" class="submit" value="<?php echo $this->submit; ?>">
+</div>
+</div>
+</form>
+<?php if ($this->hasError): ?>
+
+<script>
+try {
+  window.scrollTo(null, ($('<?php echo $this->formId; ?>').getElement('p.error').getPosition().y - 20));
+} catch(e) {}
+</script>
+<?php endif; ?>
+<?php endif; ?>
+
+</div>
+<!-- indexer::continue -->
+<?php endif; ?>
+
+</div>
+<?php endif; ?>
+
+</div>
